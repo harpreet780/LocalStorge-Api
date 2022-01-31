@@ -68,7 +68,6 @@ const TodoFields = ({
             })}
             {data?.length ?
             <div className="btnGrp">
-                <button className="clearBtn" style={{color:"#ea9393"}}>Select All</button> 
                 <button className="clearBtn" onClick={onClearData}>Clear All</button> 
             </div>
                 : null}

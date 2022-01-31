@@ -48,6 +48,10 @@ const Axios = () => {
             e.preventDefault();
             HttpsReq.post("data", singleTodo).then((res) => {
                 setData([...data, res.data])
+                localStorage.setItem('todo', JSON.stringify([...data,res.data]));
+                const lconfigData = JSON.parse(localStorage.getItem("todo"));
+console.log(lconfigData);
+
                 setTodoData("");
             })
         }
@@ -68,6 +72,7 @@ const Axios = () => {
         data.forEach((item) => {
             HttpsReq.delete(`data/${item.id}`).then(() => {
                 setData([]);
+                localStorage.clear()
             })
         })
     }
