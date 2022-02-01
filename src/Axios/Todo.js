@@ -53,7 +53,7 @@ const Axios = () => {
             }
             e.preventDefault();
             HttpsReq.post("data", singleTodo).then((res) => {
-                // setData([...data, res.data])
+                setData([...data, res.data])
                 localStorage.setItem('todo', JSON.stringify([...data, res.data]));
                 setTodoData("");
             })
@@ -63,7 +63,7 @@ const Axios = () => {
         const result = todoDatas.filter(item => item.id !== id);
             console.log(result,"res");
             
-            // setData(result);
+            setData(result);
             localStorage.setItem("todo", JSON.stringify(result));
         HttpsReq.delete(`data/${id}`).then(() => {
             
@@ -78,7 +78,7 @@ const Axios = () => {
     const onClearData = () => {
         todoDatas.forEach((item) => {
             HttpsReq.delete(`data/${item.id}`).then((res) => {
-                // setData([]);
+                setData([]);
                 localStorage.clear()
             })
         })
@@ -96,7 +96,7 @@ const Axios = () => {
         newData[foundObjIndex].complete = !newData[foundObjIndex].complete;
         HttpsReq.put(`data/${id}`, foundcheck).then(() => {
             localStorage.setItem('todo', JSON.stringify(newData));
-            // setData(newData);
+            setData(newData);
         })
     }
     return (
