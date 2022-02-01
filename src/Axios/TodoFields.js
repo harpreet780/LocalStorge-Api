@@ -1,5 +1,4 @@
 import React from 'react';
-
 const TodoFields = ({
     onAdd,
     todoData, 
@@ -11,7 +10,9 @@ const TodoFields = ({
     selectItems, 
     error, 
     onClearData, 
+    todoDatas,
     onCancel }) => {
+         
     return (
         <div>
             <div className="inputFieldWrap">
@@ -37,11 +38,11 @@ const TodoFields = ({
                 </button>
                     : null
                 }
-                <div className="validate">
+            </div>      
+            <div className="validate">
                     {error}
                 </div>
-            </div>
-            {data?.map((item) => {
+            {todoDatas?.map((item) => {
                 return <div className="axoisDataWrap" key={item.id} >
                     <div key={item.id} style={{ textDecoration: item.complete ? "line-through" : null }}>
                         <input
@@ -49,7 +50,6 @@ const TodoFields = ({
                             id={item.id}
                             checked={item.complete}
                             onChange={() => handleCheck(item.id)}
-
                         />
                         <span>{item.name}</span>
                     </div>
@@ -66,7 +66,7 @@ const TodoFields = ({
                     </div>
                 </div>
             })}
-            {data?.length ?
+            {todoDatas?.length > 1 ?
             <div className="btnGrp">
                 <button className="clearBtn" onClick={onClearData}>Clear All</button> 
             </div>

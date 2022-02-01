@@ -6,14 +6,21 @@ const Axios = () => {
     const [selectItems, setSelectItems] = useState(true);
     const [selectId, setSelectId] = useState();
     const [error, setError] = useState("")
+    let todoDatas;
+    todoDatas = JSON.parse(localStorage.getItem("todo"));
     const AxiosEffect = () => {
         HttpsReq.get("data").then((res) => {
             setData(res.data);
+            localStorage.setItem("todo", JSON.stringify(res.data));
         })
     }
     useEffect(() => {
         AxiosEffect()
     }, [])
+    useEffect(() => {
+        todoDatas = JSON.parse(localStorage.getItem("todo"));
+        console.log(todoDatas);
+    }, [data.length])
     const [todoData, setTodoData] = useState("");
     const TodoValue = (e) => {
         setTodoData(e.target.value);
@@ -25,17 +32,16 @@ const Axios = () => {
             return
         }
         if (todoData && !selectItems) {
-            setData(data.map((item) => {
+            const Editmap = todoDatas.map((item) => {
                 if (item.id === selectId) {
-                    return { item, name: todoData }
+                    return { ...item, name: todoData }
                 }
                 return item
             })
-
-            )
+            localStorage.setItem('todo', JSON.stringify(Editmap));
             const found = data.find(item => item.id === selectId);
             const foundnew = { ...found, name: todoData }
-            HttpsReq.put(`data/${selectId}`, foundnew).then(() => {
+            HttpsReq.put(`data/${selectId}`, foundnew).then((res) => {
                 setTodoData("");
                 setSelectItems(true)
             })
@@ -47,31 +53,32 @@ const Axios = () => {
             }
             e.preventDefault();
             HttpsReq.post("data", singleTodo).then((res) => {
-                setData([...data, res.data])
-                localStorage.setItem('todo', JSON.stringify([...data,res.data]));
-                const lconfigData = JSON.parse(localStorage.getItem("todo"));
-console.log(lconfigData);
-
+                // setData([...data, res.data])
+                localStorage.setItem('todo', JSON.stringify([...data, res.data]));
                 setTodoData("");
             })
         }
     }
     const onDelete = (id) => {
+        const result = todoDatas.filter(item => item.id !== id);
+            console.log(result,"res");
+            
+            // setData(result);
+            localStorage.setItem("todo", JSON.stringify(result));
         HttpsReq.delete(`data/${id}`).then(() => {
-            const result = data.filter(item => item.id !== id);
-            setData(result);
+            
         })
     }
     const onEdit = (id) => {
-        const found = data.find(item => item.id === id);
-        setTodoData(found.name)
-        setSelectItems(false)
-        setSelectId(id)
+            const found = todoDatas.find(item => item.id === id);
+            setTodoData(found.name)
+            setSelectItems(false)
+            setSelectId(id)
     }
     const onClearData = () => {
-        data.forEach((item) => {
-            HttpsReq.delete(`data/${item.id}`).then(() => {
-                setData([]);
+        todoDatas.forEach((item) => {
+            HttpsReq.delete(`data/${item.id}`).then((res) => {
+                // setData([]);
                 localStorage.clear()
             })
         })
@@ -88,7 +95,8 @@ console.log(lconfigData);
         const foundObjIndex = newData.indexOf(foundcheck);
         newData[foundObjIndex].complete = !newData[foundObjIndex].complete;
         HttpsReq.put(`data/${id}`, foundcheck).then(() => {
-            setData(newData);
+            localStorage.setItem('todo', JSON.stringify(newData));
+            // setData(newData);
         })
     }
     return (
@@ -104,6 +112,7 @@ console.log(lconfigData);
                 selectItems={selectItems}
                 onClearData={onClearData}
                 onCancel={onCancel}
+                todoDatas={todoDatas}
                 handleCheck={handleCheck}
             />
         </div>
