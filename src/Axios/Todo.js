@@ -52,6 +52,7 @@ const Axios = () => {
             }
             e.preventDefault();
             HttpsReq.post("data", singleTodo).then((res) => {
+                setData([...data, res.data])
                 localStorage.setItem('todo', JSON.stringify([...data, res.data]));
                 setTodoData("");
             })

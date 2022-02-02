@@ -42,9 +42,9 @@ const TodoFields = ({
             <p className="validate">
                 {error}
             </p>
-            {todoDatas?.length ===0 ?
-                   <p className="emptyText">Please enter the data</p>
-                    :
+            {todoDatas?.length === 0 ?
+                <p className="emptyText">Please enter the data</p>
+                :
                 null}
             {todoDatas?.map((item) => {
                 return <div className="axoisDataWrap" key={item.id} >
