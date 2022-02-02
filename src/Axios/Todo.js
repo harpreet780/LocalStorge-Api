@@ -19,7 +19,6 @@ const Axios = () => {
     }, [])
     useEffect(() => {
         todoDatas = JSON.parse(localStorage.getItem("todo"));
-        console.log(todoDatas);
     }, [data.length])
     const [todoData, setTodoData] = useState("");
     const TodoValue = (e) => {
@@ -28,7 +27,7 @@ const Axios = () => {
     }
     const onAdd = (e) => {
         if (!todoData) {
-            setError("must enter value*")
+            setError("Must enter value*")
             return
         }
         if (todoData && !selectItems) {
@@ -53,20 +52,16 @@ const Axios = () => {
             }
             e.preventDefault();
             HttpsReq.post("data", singleTodo).then((res) => {
-                setData([...data, res.data])
                 localStorage.setItem('todo', JSON.stringify([...data, res.data]));
                 setTodoData("");
             })
         }
     }
-    const onDelete = (id) => {
+    const onDelete = (id) => { 
         const result = todoDatas.filter(item => item.id !== id);
-            console.log(result,"res");
-            
             setData(result);
             localStorage.setItem("todo", JSON.stringify(result));
-        HttpsReq.delete(`data/${id}`).then(() => {
-            
+        HttpsReq.delete(`data/${id}`).then(() => {    
         })
     }
     const onEdit = (id) => {
@@ -77,7 +72,7 @@ const Axios = () => {
     }
     const onClearData = () => {
         todoDatas.forEach((item) => {
-            HttpsReq.delete(`data/${item.id}`).then((res) => {
+            HttpsReq.delete(`data/${item.id}`).then(() => {
                 setData([]);
                 localStorage.clear()
             })
@@ -96,7 +91,6 @@ const Axios = () => {
         newData[foundObjIndex].complete = !newData[foundObjIndex].complete;
         HttpsReq.put(`data/${id}`, foundcheck).then(() => {
             localStorage.setItem('todo', JSON.stringify(newData));
-            setData(newData);
         })
     }
     return (

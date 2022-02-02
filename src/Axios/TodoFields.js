@@ -1,18 +1,18 @@
 import React from 'react';
 const TodoFields = ({
     onAdd,
-    todoData, 
-    change, 
-    onDelete, 
-    handleCheck, 
-    data, 
-    onEdit, 
-    selectItems, 
-    error, 
-    onClearData, 
+    todoData,
+    change,
+    onDelete,
+    handleCheck,
+    data,
+    onEdit,
+    selectItems,
+    error,
+    onClearData,
     todoDatas,
     onCancel }) => {
-         
+
     return (
         <div>
             <div className="inputFieldWrap">
@@ -38,10 +38,14 @@ const TodoFields = ({
                 </button>
                     : null
                 }
-            </div>      
-            <div className="validate">
-                    {error}
-                </div>
+            </div>
+            <p className="validate">
+                {error}
+            </p>
+            {todoDatas?.length ===0 ?
+                   <p className="emptyText">Please enter the data</p>
+                    :
+                null}
             {todoDatas?.map((item) => {
                 return <div className="axoisDataWrap" key={item.id} >
                     <div key={item.id} style={{ textDecoration: item.complete ? "line-through" : null }}>
@@ -56,21 +60,22 @@ const TodoFields = ({
                     <div>
                         <button
                             style={{ backgroundColor: "#34c13a" }}
-                            className="delBtn" onClick={() => {onEdit(item.id)}}>
+                            className="delBtn" onClick={() => { onEdit(item.id) }}>
                             Edit
                         </button>
                         <button
-                            className="delBtn" onClick={() => {onDelete(item.id)}}>
+                            className="delBtn" onClick={() => { onDelete(item.id) }}>
                             Delete
                         </button>
                     </div>
                 </div>
             })}
             {todoDatas?.length > 1 ?
-            <div className="btnGrp">
-                <button className="clearBtn" onClick={onClearData}>Clear All</button> 
-            </div>
+                <div className="btnGrp">
+                    <button className="clearBtn" onClick={onClearData}>Clear All</button>
+                </div>
                 : null}
+
         </div>
     );
 };
