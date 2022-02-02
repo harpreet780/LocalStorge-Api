@@ -92,6 +92,7 @@ const Axios = () => {
         newData[foundObjIndex].complete = !newData[foundObjIndex].complete;
         HttpsReq.put(`data/${id}`, foundcheck).then(() => {
             localStorage.setItem('todo', JSON.stringify(newData));
+            setData(newData);
         })
     }
     return (
